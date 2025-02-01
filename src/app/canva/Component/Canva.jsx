@@ -7,9 +7,9 @@ import { Canvas } from '@react-three/fiber';
 import { extend } from '@react-three/fiber';
 import { Environment, Center } from '@react-three/drei';
 
-import Shirt from './Shirt';
-import CameraRig from './CameraRig';
-import Backdrop from './Backdrop';
+import Shirt from './Products/Shirt';
+import CameraRig from './UI/CameraRig';
+import Backdrop from './UI/Backdrop';
 import { CustomButton } from '@/components/Canvas';
 
 import { BsArrowLeft, BsArrowRight, BsArrowUp, BsArrowDown } from "react-icons/bs";

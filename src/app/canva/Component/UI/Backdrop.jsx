@@ -9,7 +9,7 @@ const Backdrop = () => {
       ref={shadows}
       temporal
       frames={120}
-      alphaTest={0.01} // Mayor transparencia en las sombras
+      alphaTest={0.001} // Mayor transparencia en las sombras
       scale={12} // Área amplia de sombras
       resolution={1024}
       rotation={[Math.PI / 2, 0, 0]}

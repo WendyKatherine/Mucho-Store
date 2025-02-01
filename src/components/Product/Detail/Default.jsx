@@ -18,7 +18,7 @@ import { useCompare } from '@/context/CompareContext'
 import { useModalCompareContext } from '@/context/ModalCompareContext'
 import ModalSizeguide from '@/components/Modal/ModalSizeguide'
 
-import CanvaLayout from '@/app/pages/canvas/canva/Canva';
+import CanvaLayout from '@/app/canva/Component/Canva';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSnapshot } from 'valtio';
 
