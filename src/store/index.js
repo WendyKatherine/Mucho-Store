@@ -7,6 +7,11 @@ const state = proxy({
   isFullTexture: false,
   logoDecal: '/threejs.png',
   fullDecal: '/threejs.png',
+  decals: {},
+
+  setFile: (decalId, file) => {
+    state.decals[decalId] = file;
+  }
 });
 
 export default state;

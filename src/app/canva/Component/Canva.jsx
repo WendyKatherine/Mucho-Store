@@ -14,12 +14,18 @@ import { CustomButton } from '@/components/Canvas';
 
 import { BsArrowLeft, BsArrowRight, BsArrowUp, BsArrowDown } from "react-icons/bs";
 import { slideAnimation } from '@/config/motion';
+import useDecalManager from '@/app/canva/hooks/useDecalManager';
+//import ShirtTexture from '@/app/canva/Component/Products/ShirtTexture';
+//import ShirtMeshBvh from './Products/ShirtMeshBvh';
+
+import { Html } from '@react-three/drei';
 
 extend({  });
 
 const CanvaLayout = () => {
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
     const snap = useSnapshot(state);
+    const { decals, addDecal, updateDecalImage } = useDecalManager();
 
     // Funciones para rotar el modelo
     const rotateLeft = () => setRotation((prev) => ({ ...prev, y: prev.y - Math.PI / 2 }));
@@ -28,7 +34,7 @@ const CanvaLayout = () => {
     const rotateDown = () => setRotation((prev) => ({ ...prev, x: prev.x + Math.PI / 2 }));
 
     return (
-        <div className='h-[600px] w-[600px] z-50'>
+        <div className='h-[700px] w-[700px] z-50'>
             <Canvas
                 shadows
                 camera={{ position: [0, 0, 0], fov: 20 }}
@@ -47,7 +53,7 @@ const CanvaLayout = () => {
             <AnimatePresence>
                     <motion.div
                         key="custom"
-                        {...slideAnimation('left')}
+                        {...slideAnimation('up')}
                     >
                     <div className='canva-control px-10'>
                         <CustomButton type="filled" title="Rotate Left" handleClick={rotateLeft}>

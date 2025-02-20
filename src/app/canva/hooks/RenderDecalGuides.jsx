@@ -1,39 +1,39 @@
-import React from 'react';
-import decalPositions from '@/app/canva/Config/decalPositions';
-import { useTexture, Decal } from '@react-three/drei';
+import React from "react";
+import { useTexture, Decal } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
+import decalPositions from "@/app/canva/Config/decalPositions";
 
 const RenderDecalGuides = ({ onClickGuide, decals }) => {
   const defaultIconTexture = useTexture("/up2.svg");
+  const { nodes } = useGLTF("/shirt_baked.glb"); // Cargar la geometría de la camiseta
 
   return (
     <>
       {Object.entries(decalPositions).map(([key, positionConfig]) => {
-
         const hasDecal = decals.some((decal) => decal.id === key);
 
-        // if (hasDecal) return null;
-
         return (
-            <group key={key}>
-            <mesh
-                position={positionConfig.position}
-                onClick={() => onClickGuide(key)}
-            >
-                <planeGeometry args={[0.05, 0.05]} />
-                <meshBasicMaterial transparent />
+          <mesh
+            key={key}
+            geometry={nodes?.T_Shirt_male?.geometry} // Usar la geometría de la camiseta
+            position={positionConfig.position}
+            rotation={positionConfig.rotation}
+            onClick={() => onClickGuide(key)}
+          >
             {!hasDecal && (
-                <Decal
-                position={[0, 0, 0]} // Posición relativa al mesh
-                rotation={positionConfig.rotation} // Rotación del decal
-                scale={[0.05, 0.05, 0.05]} // Escala del decal
-                map={defaultIconTexture} // Textura de la imagen
-                polygonOffset // Evita z-fighting
-                polygonOffsetFactor={-10} // Ajusta según sea necesario
-                />
+              <Decal
+                position={[0, 0, 0]} // Se proyecta sobre la geometría de la camiseta
+                rotation={positionConfig.rotation}
+                scale={positionConfig.scale}
+                map={defaultIconTexture}
+                polygonOffset
+                polygonOffsetFactor={-10}
+                depthTest={false}
+                depthWrite={false}
+              />
             )}
-            </mesh>
-        </group>
-        )
+          </mesh>
+        );
       })}
     </>
   );

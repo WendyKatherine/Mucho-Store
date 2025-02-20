@@ -2,17 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { easing } from 'maath';
 import { useFrame, extend, useThree } from '@react-three/fiber';
-import { Decal, useGLTF, Html, OrbitControls, VertexNormalsHelper } from '@react-three/drei';
+import { Decal, useGLTF, Html, useTexture, OrbitControls, VertexNormalsHelper } from '@react-three/drei';
 import state from '@/store/index';
 import useDecalManager from '@/app/canva/hooks/useDecalManager';
 import decalPositions from '@/app/canva/Config/decalPositions';
 import FormComponent from '@/app/canva/Component/Forms/FormComponent';
 import { IoMdCloseCircle } from "react-icons/io";
-import RenderDecalGuides from '@/app/canva/hooks/RenderDecalGuides';
+import ControlPanel from '../UI/ControlPanel';
+//import RenderDecalGuides from '@/app/canva/hooks/RenderDecalGuides';
 
 extend({ Decal });
 
-const Shirt = ({rotation}) => {
+const Shirt = ({rotation, onSubmit }) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF("/shirt_baked.glb");
   const { decals, addDecal, updateDecalImage } = useDecalManager();
@@ -20,8 +21,9 @@ const Shirt = ({rotation}) => {
   const [selectedArea, setSelectedArea] = useState(null); // Estado para manejar el área seleccionada
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar el modal
   const [selectedDecalId, setSelectedDecalId] = useState(null);
+  const defaultIconTexture = useTexture("/up2.svg");
 
-  const handleFileUpload = (areaKey, file) => {
+    const handleFileUpload = (areaKey, file) => {
     const positionConfig = decalPositions[areaKey];
     if (!positionConfig || !file || !nodes?.T_Shirt_male?.geometry) return;
   
@@ -55,6 +57,7 @@ const Shirt = ({rotation}) => {
 
   return (
     <>
+    
     {/* <ModelWithHelper /> */}
       {/* <OrbitControls
         minPolarAngle={Math.PI / 2.5} // Ángulo mínimo
@@ -72,6 +75,7 @@ const Shirt = ({rotation}) => {
             material-roughness={1}
             dispose={null}
           >
+            {/* Renderizar los decals reales */}
             {decals.map((decal) => (
               decal.texture && (
                 <Decal
@@ -88,37 +92,55 @@ const Shirt = ({rotation}) => {
                 />
               )
             ))}
-            
+
+            {/* Renderizar las guías como Decals */}
+            {Object.entries(decalPositions).map(([key, positionConfig]) => {
+              const hasDecal = decals.some((decal) => decal.id === key);
+              return (
+                !hasDecal && (
+                  <Decal
+                    key={`guide-${key}`}
+                    position={positionConfig.position}
+                    scale={positionConfig.scale}
+                    rotation={positionConfig.rotation}
+                    map={defaultIconTexture} // Guía como textura
+                    depthTest={false}
+                    depthWrite={false}
+                    polygonOffset
+                    polygonOffsetFactor={-10}
+                    onClick={() => handleClickGuide(key)}
+                  />
+                )
+              );
+            })}
           </mesh>
         )}
-          
-          <RenderDecalGuides onClickGuide={handleClickGuide} decals={decals} />
       </group>
-      
-      {/* Modal para FilePicker */}
+
+      {/* Modal para subir archivo */}
       {isModalOpen && selectedDecalId && (
         <Html position={decalPositions[selectedArea]?.position}>
           <div className="modal-backdrop" style={{ position: "absolute" }}>
             <div className="modal-content">
               <button
-                  className="absolute right-5 top-5"
-                  onClick={() => {
-                    setIsModalOpen(false);
-                    setSelectedDecalId(null);
-                  }}
-                >
+                className="absolute right-5 top-5"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setSelectedDecalId(null);
+                }}
+              >
                 <IoMdCloseCircle size={25} />
               </button>
               <h3 className="text-sm font-bold mb-4">
                 Select a file for {selectedArea}
               </h3>
               <FormComponent
-                  onSubmit={(data) => {
-                    handleFileUpload(selectedArea, data.file);
-                  }}
-                  selectedArea={selectedArea}
-                  decalId={selectedDecalId}
-                  updateDecalImage={updateDecalImage}
+                onSubmit={(data) => {
+                  handleFileUpload(selectedArea, data.file);
+                }}
+                selectedArea={selectedArea}
+                decalId={selectedDecalId}
+                updateDecalImage={updateDecalImage}
               />
             </div>
           </div>

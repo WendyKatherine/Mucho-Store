@@ -39,9 +39,9 @@ const FormComponent = ({ onSubmit, selectedArea }) => {
             />
             <div className='wrap-next-button'>
               <button 
-              className="next-button"
-              onClick={nextStep}
-              disabled={!file}
+                className="next-button"
+                onClick={nextStep}
+                disabled={!file}
               >
                 Next <MdNavigateNext size={15} />
               </button>

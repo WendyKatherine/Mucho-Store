@@ -28,7 +28,7 @@ import { download } from '@/assets';
 import { downloadCanvasToImage, reader } from '@/config/helpers';
 import { EditorTabs, FilterTabs, DecalTypes } from '@/config/constants';
 import { fadeAnimation, slideAnimation } from '@/config/motion';
-
+import ControlPanel from '@/app/canva/Component/UI/ControlPanel';
 import { ColorPicker, CustomButton, FilePicker, Tab } from '@/components/Canvas';
 
 const Default = ({ data, productId }) => {
@@ -123,11 +123,11 @@ const Default = ({ data, productId }) => {
         <div className="product-detail default">
             <div className="flex flex-row featured-product underwear md:py-20 py-10">
                 <div className="container flex flex-col flex-wrap content-center items-center gap-y-6">
-                    <div className=" list-img md:pr-[45px] w-full">
-                            <CanvaLayout />
-                        </div>
+                    <div className=" list-img w-full">
+                        <CanvaLayout />
                     </div>
-                    <div className="product-infor md:w-1/2 w-full lg:pl-[15px] md:pl-2">
+                    </div>
+                    <div className="product-infor md:w-[40%] w-full lg:pl-[15px] md:pl-2">
                         <div className="flex justify-between">
                             <div>
                                 <div className="caption2 text-secondary font-semibold uppercase">{productMain.type}</div>
@@ -148,6 +148,7 @@ const Default = ({ data, productId }) => {
                                 )}
                             </div>
                         </div>
+                        
                         <div className="flex items-center mt-3">
                             <Rate currentRate={productMain.rate} size={14} />
                             <span className='caption1 text-secondary'>(1.234 reviews)</span>
@@ -155,7 +156,9 @@ const Default = ({ data, productId }) => {
                         <div className="flex items-center gap-3 flex-wrap mt-5 pb-6 border-b border-line">
                             <div className="product-price heading5">${productMain.price}.00</div>
                             <div className='w-px h-4 bg-line'></div>
-                            <div className="product-origin-price font-normal text-secondary2"><del>${productMain.originPrice}.00</del></div>
+                            <div className="product-origin-price font-normal text-secondary2">
+                                <del>${productMain.originPrice}.00</del>
+                            </div>
                             {productMain.originPrice && (
                                 <div className="product-sale caption2 font-semibold bg-green px-3 py-0.5 inline-block rounded-full">
                                     -{percentSale}%
@@ -168,6 +171,9 @@ const Default = ({ data, productId }) => {
                                 <div className="mt-4">
                                     <h2 className="text-lg font-semibold">Choose a Color</h2>
                                     <ColorPicker /> 
+                                </div>
+                                <div className="flex items-center mt-3">
+                                    <ControlPanel />
                                 </div>
                                 <div className="heading flex items-center justify-between">
                                     <div className="text-title">Size: <span className='text-title size'>{activeSize}</span></div>
